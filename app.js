@@ -36,6 +36,7 @@ function route(){
   $$('.view').forEach(v=>v.classList.toggle('on',v.id===h));
   $('#reqBtn').classList.toggle('act',h==='samples');
   $('#drawer').classList.remove('on');window.scrollTo(0,0);
+  updateContactLinks(h);
   ({inventory:renderInv,results:renderRes,detail:renderDetail,inquiry:renderInq,inquiries:renderInqs,idetail:renderIdetail})[h]?.();
 }
 addEventListener('hashchange',route);
@@ -83,7 +84,7 @@ function renderInv(){
   const l=slabs.filter(s=>(s.n+s.c).toLowerCase().includes(q));
   const m=l.filter(s=>s.k==='Marble').length;
   $('#invCount').textContent=`${l.length} slab${l.length==1?'':'s'} available · Marble (${m}) · Travertine (${l.length-m}) · Honed / Polished`;
-  $('#invGrid').innerHTML=l.length?l.map(s=>`<div class="card"><div class="img ${s.t}"><span class="tag">Available</span><button class="heart ${fav.has(s.c)?'on':''}" data-fav="${s.c}" aria-label="Save">${fav.has(s.c)?'♥':'♡'}</button></div><p class="sm mu mt2">${s.c}</p><h3>${s.n}</h3><p class="sm mu">${s.f} · ${s.w} × ${s.h} cm</p><a class="lnk sm mt2" href="#" data-slab="${s.c}">View material details →</a></div>`).join(''):'<p class="mu">No slabs found. Try another name or code.</p>';
+  $('#invGrid').innerHTML=l.length?l.map(s=>`<div class="card"><div class="img ${s.t}"><span class="tag">Available</span><button class="heart ${fav.has(s.c)?'on':''}" data-fav="${s.c}" aria-label="Save">${fav.has(s.c)?'♥':'♡'}</button></div><p class="sm mu mt2">${s.c}</p><h3>${s.n}</h3><p class="sm mu">${s.f} · ${s.w} × ${s.h} cm</p><a class="lnk sm mt2" href="#" data-slab="${s.c}">View material details →</a><button class="lnk sm sample-action" data-sample="${s.c}">Request sample →</button></div>`).join(''):'<p class="mu">No slabs found. Try another name or code.</p>';
   $('#srcGrid').innerHTML=src.map(s=>`<div class="card"><div class="img ${s[1]}"></div><h3 class="mt2">${s[0]}</h3><p class="sm mu">${s[2]} · ${s[3]} × 20 mm</p><div class="bar mt2" style="flex-wrap:nowrap;align-items:flex-start"><span class="sm">USD ${s[4]} / m²${s[5]?` · ${s[5]} off`:''}</span><a class="lnk sm" href="#inquiry" style="white-space:nowrap">Inquire →</a></div></div>`).join('');
 }
 $('#q').oninput=renderInv;
@@ -95,8 +96,6 @@ function renderDetail(){
   $('#dCrumb').textContent=`INVENTORY / ${s.k.toUpperCase()} / ${s.n.toUpperCase()}`;
   $('#dImg').className='img '+s.t;$('#dName').textContent=s.n;$('#dCode').textContent=s.c+' · Natural stone collection';$('#dDesc').textContent=desc(s);
   $('#dSpec').innerHTML=[['Material type',s.k],['Slab dimensions',`${s.w} × ${s.h} cm`],['Thickness','20 mm'],['Finish',s.f],['Color',s.col||'—']].map(r=>`<div class="kv"><span>${r[0]}</span><b>${r[1]}</b></div>`).join('');
-  renderComparison();
-  renderSlabMetrics();
 }
 $('#dAdd').onclick=()=>{if(!S.sel.includes(S.cur))S.sel=[...S.sel,S.cur];S.cur=S.cur;toast('Added to inquiry');go('inquiry')};
 $('#dDl').onclick=()=>{const s=S.cur,b=new Blob([`${s.n} (${s.c})\nType: ${s.k}\nSize: ${s.w} x ${s.h} cm\nThickness: 20 mm\nFinish: ${s.f}\nColor: ${s.col}\n`],{type:'text/plain'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=s.c+'-specs.txt';a.click();toast('Specifications downloaded')};
@@ -165,48 +164,10 @@ $('#faqList').addEventListener('click',e=>{const b=e.target.closest('button');if
 renderTops();route();
 
 
-/* Infographics: use inventory values as the single source of truth. */
-function renderComparison(){
-  const select=$('#compareSlab');
-  const previous=select.value;
-  select.innerHTML=slabs.filter(s=>s!==S.cur).map(s=>`<option value="${s.c}">${s.n} · ${s.c}</option>`).join('');
-  if(previous!==S.cur.c&&slabs.some(s=>s.c===previous))select.value=previous;
-  drawComparison();
-}
-function drawComparison(){
-  const other=slabs.find(s=>s.c===$('#compareSlab').value)||slabs.find(s=>s!==S.cur);
-  $('#compareFigures').innerHTML=[S.cur,other].map((s,i)=>{
-    // A fixed 320 × 180 cm reference keeps both drawings proportional.
-    const w=s.w*.85,h=s.h*.85,x=(340-w)/2,y=190-h;
-    return `<figure class="sm-figure"><svg viewBox="0 0 340 224" role="img" aria-label="${s.n}: ${s.w} by ${s.h} centimeters"><rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${i?'#171511':'#1e1b15'}" stroke="#bfa066" stroke-width="1"/><path d="M${x} 204h${w}m0 -4v8m${-w} -8v8" stroke="#63563d" fill="none"/><text x="170" y="220" text-anchor="middle">${s.w} cm</text><text x="170" y="${y-10}" text-anchor="middle">${s.h} cm height</text></svg><figcaption><div><p>${i?'COMPARE WITH':'SELECTED SLAB'} · ${s.c}</p><h3>${s.n}</h3><p>${s.k} · ${s.f}</p></div><div class="sm-area">${area(s,1)}<small> m²</small></div></figcaption>${i?`<button class="lnk" data-slab="${s.c}">View this slab →</button>`:'<p class="note">Dimensions shown to scale.</p>'}</figure>`;
-  }).join('');
-}
-$('#compareSlab').addEventListener('change',drawComparison);
 document.addEventListener('click',e=>{
   if(e.target.closest('[data-upload]'))$('#file').click();
   if(e.target.closest('[data-compare-link]'))go('detail');
-  // Hash routing does not fire when a comparison opens another slab on #detail.
-  if(e.target.closest('#compareFigures [data-slab]'))renderDetail();
 });
-
-/* Segmented measurements use actual slab values and inventory maxima. */
-function renderSlabMetrics(){
-  const s=S.cur;
-  const metrics=[
-    {label:'Slab width',value:s.w,max:Math.max(...slabs.map(x=>x.w)),unit:'cm',note:'Across the face of the slab'},
-    {label:'Slab height',value:s.h,max:Math.max(...slabs.map(x=>x.h)),unit:'cm',note:'Along the shorter dimension'},
-    {label:'Gross slab area',value:s.w*s.h/1e4,max:Math.max(...slabs.map(x=>x.w*x.h/1e4)),unit:'m²',note:'Before cutting and fabrication'}
-  ];
-  $('#slabMetrics').innerHTML=metrics.map(m=>{
-    const n=m.unit==='m²'?m.value.toFixed(2):m.value;
-    const segments=Array.from({length:24},(_,i)=>{
-      const fraction=Math.max(0,Math.min(1,m.value/m.max*24-i));
-      return `<i><span style="--fill:${fraction}"></span></i>`;
-    }).join('');
-    return `<article class="sm-metric"><div class="sm-scale" aria-hidden="true"><span>0</span><span>${m.max} ${m.unit}</span></div><div class="sm-segments" role="img" aria-label="${m.label}: ${n} ${m.unit}, scale maximum ${m.max} ${m.unit}">${segments}</div><p class="sm-metric-value">${n}<small>${m.unit}</small></p><h3>${m.label}</h3><p>${m.note}</p></article>`;
-  }).join('');
-}
-
 
 /* One reversible scroll controller for every routed page and dynamic grid.
    No layout changes; out-of-view content stays in the accessibility tree.
@@ -217,7 +178,7 @@ function renderSlabMetrics(){
   const targets=new Set();
   const selector=[
     '.view > :not(.hero):not(.split):not(.g2):not(.g3):not(.g4):not(.ig-stages):not(#faqList)',
-    '.view > .hero > *','.view > .split > *',
+    '.view > .split > *',
     '.view > .g2 > *','.view > .g3 > *','.view > .g4 > *',
     '.view > .ig-stages > *','.view > #faqList > *'
   ].join(',');
@@ -264,4 +225,194 @@ function renderSlabMetrics(){
     }
   });
   scan();
+})();
+
+/* Direct contact keeps the selected material in the prepared message. */
+function updateContactLinks(view){
+  if(view!=='inquiry'&&view!=='samples')return;
+  const sample=view==='samples';
+  const selected=sample?[S.cur]:(S.sel.includes(S.cur)?S.sel:[S.cur]);
+  const section=document.getElementById(view);
+  const quantity=Number(section.querySelector('[data-contact-qty]').value)||1;
+  const summary=section.querySelector('[data-contact-summary]');
+  const selectionKey=selected.map(s=>s.c).join(',');
+  if(summary.dataset.selection!==selectionKey){
+    summary.dataset.selection=selectionKey;
+    summary.innerHTML=selected.map(s=>`<div class="contact-request-material"><div class="thumb ${s.t}" role="img" aria-label="${s.n}"></div><div><h3>${s.n}</h3><p>${s.c} · ${s.f}</p><p>${s.w} × ${s.h} cm · 20 mm</p></div></div>`).join('');
+  }
+  const totalArea=selected.reduce((sum,s)=>sum+s.w*s.h*quantity/1e4,0).toFixed(2);
+  section.querySelector('[data-contact-area]').textContent=totalArea+' m²';
+  const descriptions=selected.map(s=>`${s.n} (${s.c}), ${s.w} × ${s.h} cm × 20 mm, ${s.f}, ${quantity} slab${quantity>1?'s':''}`);
+  const message=`Hello SlabMatch, I would like to ${sample?'request a sample of':'inquire about'}:\n${descriptions.join('\n')}\nEstimated slab area: ${totalArea} m².\nPlease share ${sample?'sample and courier options':'pricing and availability'}.`;
+  section.querySelector('[data-contact-wa]').href='https://wa.me/?text='+encodeURIComponent(message);
+  section.querySelector('[data-contact-email]').href='mailto:hello@slabmatch.com?subject='+encodeURIComponent(sample?'Sample request':'Project inquiry')+'&body='+encodeURIComponent(message);
+}
+document.addEventListener('change',event=>{
+  if(event.target.matches('[data-contact-qty]'))updateContactLinks(event.target.closest('.view').id);
+});
+document.addEventListener('click',event=>{
+  const action=event.target.closest('[data-contact-wa],[data-contact-email]');
+  if(!action)return;
+  const consent=action.closest('.contact-request').querySelector('[data-contact-consent]');
+  if(!consent.checked){event.preventDefault();consent.reportValidity();consent.focus()}
+});
+document.addEventListener('click',event=>{
+  const sample=event.target.closest('[data-sample],[data-sample-current]');
+  if(sample){
+    const material=slabs.find(s=>s.c===sample.dataset.sample);
+    if(material)S.cur=material;
+    go('samples');
+    updateContactLinks('samples');
+  }
+
+});
+
+/* Hero autoplay: one timer, one visible image, one synchronized caption.
+   Controls do not suspend autoplay; Pause is the explicit user override. */
+(()=>{
+  const carousel=document.querySelector('.hero-carousel');
+  if(!carousel)return;
+  const slides=[...carousel.querySelectorAll('.hero-slide')];
+  if(!slides.length)return;
+  const pause=carousel.querySelector('[data-hero-pause]');
+  const count=carousel.querySelector('[data-hero-count]');
+  const link=carousel.querySelector('[data-hero-link]');
+  let current=0;
+  let timer;
+  let paused=false;
+  let visible=true;
+  function schedule(){
+    clearTimeout(timer);
+    const home=!location.hash||location.hash==='#home';
+    if(!paused&&visible&&home&&!document.hidden&&slides.length>1){
+      timer=setTimeout(()=>show(current+1),4000);
+    }
+  }
+  function show(index){
+    current=(index+slides.length)%slides.length;
+    slides.forEach((slide,i)=>{
+      slide.hidden=i!==current;
+      slide.classList.toggle('is-active',i===current);
+    });
+    const active=slides[current];
+    link.textContent=active.dataset.title+' →';
+    link.href=active.dataset.href;
+    count.textContent=String(current+1).padStart(2,'0')+' / '+String(slides.length).padStart(2,'0');
+    count.setAttribute('aria-label',`Slide ${current+1} of ${slides.length}`);
+    schedule();
+  }
+  carousel.querySelector('[data-hero-prev]').addEventListener('click',()=>show(current-1));
+  carousel.querySelector('[data-hero-next]').addEventListener('click',()=>show(current+1));
+  pause.addEventListener('click',()=>{
+    paused=!paused;
+    pause.textContent=paused?'Play':'Pause';
+    pause.setAttribute('aria-label',paused?'Play slideshow':'Pause slideshow');
+    pause.setAttribute('aria-pressed',String(paused));
+    schedule();
+  });
+  document.addEventListener('visibilitychange',schedule);
+  addEventListener('hashchange',schedule);
+  addEventListener('pageshow',schedule);
+  if('IntersectionObserver' in window){
+    new IntersectionObserver(entries=>{
+      const nextVisible=entries[0].isIntersecting;
+      if(visible!==nextVisible){visible=nextVisible;schedule()}
+    }).observe(carousel);
+  }
+  show(0);
+})();
+
+/* Reference motion: scrubbed entrance, center hold, then native sticky exit. */
+(()=>{
+ const hero=document.querySelector('#home .hero'),stage=hero.querySelector('.hero-stage'),panel=hero.querySelector('.hero-copy');
+ const motion=matchMedia('(prefers-reduced-motion: reduce)');
+ let queued=false;
+ function draw(){
+  queued=false;
+  const home=document.getElementById('home').classList.contains('on');
+  if(!home)return;
+  const h=stage.clientHeight,travel=Math.max(1,hero.offsetHeight-h),distance=Math.max(0,56-hero.getBoundingClientRect().top);
+  const p=motion.matches?1:Math.min(1,distance/(travel*.68));
+  const ease=1-Math.pow(1-p,1.5);
+  stage.style.setProperty('--panel-y',((h+panel.offsetHeight)/2+24)*(1-ease)+'px');
+  stage.style.setProperty('--hero-inset',(15-12*ease)+'%');
+  stage.style.setProperty('--title-scale',1-.32*ease);
+  stage.style.setProperty('--photo-scale',1.12-.12*ease);
+  stage.style.setProperty('--mobile-title-opacity',1-Math.min(1,p*2));
+ }
+ function queue(){if(!queued){queued=true;requestAnimationFrame(draw)}}
+ function reveal(){
+  const y=scrollY+hero.getBoundingClientRect().top-56+(hero.offsetHeight-stage.clientHeight)*.68;
+  scrollTo({top:y,behavior:motion.matches?'instant':'smooth'});
+ }
+ panel.addEventListener('focusin',()=>{if(panel.getBoundingClientRect().top>innerHeight-100)reveal()});
+ addEventListener('scroll',queue,{passive:true});addEventListener('resize',queue);addEventListener('hashchange',queue);addEventListener('pageshow',queue);
+ motion.addEventListener('change',queue);
+ new ResizeObserver(queue).observe(panel);
+ draw();
+})();
+
+/* Additive motion layer. Existing routes, graphics and scroll controllers stay intact.
+   Text is animated as readable blocks; no splitting or rewriting of copy or controls. */
+(()=>{
+ if(!('IntersectionObserver' in window))return;
+ const motion=matchMedia('(prefers-reduced-motion: reduce)');
+ const registered=new Set();
+ const selectors='h1,h2,h3,h4,p,.img,label,button,a,ul,ol,table,.tag,.steps,.sm-area';
+ const protectedGraphics='.sm-atlas,.sm-road,.sm-process,.hero-opening,.hero-navigation';
+ let pending=false;
+ function visible(el,r=el.getBoundingClientRect()){
+  return r.width>0&&r.height>0&&r.bottom>58&&r.top<innerHeight-12;
+ }
+ function update(el,on,rect){
+  const focused=el===document.activeElement||el.contains(document.activeElement);
+  el.classList.toggle('sm-motion-in',motion.matches||on||focused);
+  el.style.setProperty('--sm-motion-offset',rect.bottom<58?'-12px':'12px');
+ }
+ const observer=new IntersectionObserver(entries=>{
+  for(const entry of entries)update(entry.target,entry.isIntersecting,entry.boundingClientRect);
+ },{rootMargin:'-58px 0px -12px 0px',threshold:0});
+ function scan(){
+  pending=false;
+  for(const el of registered){
+   if(!el.isConnected){observer.unobserve(el);registered.delete(el)}
+  }
+  const view=document.querySelector('.view.on');
+  if(!view)return;
+  let order=0;
+  const elements=[...view.querySelectorAll(selectors),...document.querySelectorAll('footer > span,footer a')];
+  for(const el of elements){
+   if(el.closest(protectedGraphics)||el.closest('[hidden],.legacy-form'))continue;
+   // A paragraph, list, or label reveals as a unit, including its inline children.
+   if(el.parentElement.closest(selectors)&&el.parentElement.closest(selectors)!==view)continue;
+   const rect=el.getBoundingClientRect();
+   if(!rect.width||!rect.height)continue;
+   if(!registered.has(el)){
+    registered.add(el);
+    el.classList.add('sm-motion-target');
+    el.style.setProperty('--sm-motion-delay',Math.min(order%4,3)*35+'ms');
+    observer.observe(el);
+   }
+   update(el,visible(el,rect),rect);
+   order++;
+  }
+ }
+ function queue(){if(!pending){pending=true;requestAnimationFrame(scan)}}
+ new MutationObserver(queue).observe(document.querySelector('main'),{childList:true,subtree:true});
+ addEventListener('hashchange',queue);
+ addEventListener('pageshow',queue);
+ document.addEventListener('click',queue);
+ document.addEventListener('toggle',queue,true);
+ motion.addEventListener('change',()=>{
+  for(const el of registered){const r=el.getBoundingClientRect();update(el,visible(el,r),r)}
+ });
+ document.addEventListener('focusin',event=>{
+  const el=event.target.closest('.sm-motion-target');
+  if(el)el.classList.add('sm-motion-in');
+ });
+ document.addEventListener('focusout',event=>{
+  const el=event.target.closest('.sm-motion-target');
+  if(el)requestAnimationFrame(()=>{const r=el.getBoundingClientRect();update(el,visible(el,r),r)});
+ });
+ scan();
 })();

@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=6">
+<link rel="stylesheet" href="styles.css?v=18">
 </head>
 <body>
 <header><div class="wrap">
@@ -16,7 +16,7 @@
 </div></header>
 
 <div class="drawer" id="drawer"><nav>
-  <a href="#home">Home</a><a href="#inventory">Inventory</a><a href="#tabletops">Tabletops</a><a href="#inspiration">Inspiration</a><a href="#process">Process</a><a href="#production">Production</a><a href="#about">About</a><a href="#faq">FAQ</a><a href="#inquiries">My inquiries</a><a href="#samples">Request samples</a>
+  <a href="#home">Home</a><a href="#inventory">Product catalogue</a><a href="#tabletops">Tabletops</a><a href="#inspiration">Inspiration</a><a href="#process">Process</a><a href="#production">Production</a><a href="#about">About</a><a href="#faq">FAQ</a><a href="#inquiries">My inquiries</a><a href="#samples">Request samples</a>
 </nav></div>
 
 <main class="wrap">
@@ -24,12 +24,29 @@
 <!-- 1 HOME -->
 <section class="view" id="home">
   <div class="hero">
-    <div>
-      <p class="eb">NATURAL STONE. HUMAN EXPERTISE.</p>
-      <h1>Your inspiration.<br>Extraordinary stone.</h1>
+    <div class="hero-stage">
+      <h1 class="hero-opening"><span>Your inspiration,</span><span>Extraordinary Stone</span></h1>
+    <section class="hero-carousel" aria-label="Explore SlabMatch" aria-roledescription="carousel">
+      <div class="hero-slides" aria-hidden="true">
+        <div class="hero-slide dine is-active" data-title="Marble top tables" data-href="#tabletops"></div>
+        <div class="hero-slide team" data-title="Fabrication techniques" data-href="#production" hidden></div>
+        <div class="hero-slide room" data-title="Case study" data-href="#inspiration" hidden></div>
+      </div>
+      <div class="hero-navigation">
+        <a class="hero-caption" data-hero-link href="#tabletops">Marble top tables →</a>
+        <div class="hero-controls" aria-label="Slideshow controls">
+          <button type="button" data-hero-prev aria-label="Previous slide">←</button>
+          <span data-hero-count aria-label="Slide 1 of 3">01 / 03</span>
+          <button type="button" data-hero-next aria-label="Next slide">→</button>
+          <button type="button" data-hero-pause aria-label="Pause slideshow" aria-pressed="false">Pause</button>
+        </div>
+      </div>
+    </section>
+    <div class="hero-copy" id="heroUpload">
+      <h2>Start with your inspiration.</h2>
       <p class="lead">Match a photo to real marble, sourced on the ground in China.</p>
       <div class="cta">
-        <button class="btn" id="pick">Choose interior photo ↑</button>
+        <button class="btn" id="pick">Upload photo ↑</button>
         <button class="btn o" id="snap">Take photo</button>
       </div>
       <input type="file" id="file" accept="image/jpeg,image/png,image/webp" hidden>
@@ -38,16 +55,7 @@
       <button class="lnk" data-demo>Try demo preview →</button>
       <p class="sm mu mt2">Private. No sign-up.</p>
     </div>
-    <div class="img room"><div class="cap"><span class="gold">FROM PHOTO TO PROJECT</span><br>Slab matching · Sourcing · Fabrication · Export</div></div>
   </div>
-  <div class="trust"><span>On-ground inspection</span><span>Reviewed in 24h</span><span>Samples first</span><span>Export support</span></div>
-  <h2>Start with a little inspiration.</h2>
-  <p class="lead" style="margin-bottom:16px">No photo yet? Try a sample.</p>
-  <div class="g4">
-    <a class="chip" href="#" data-demo><div class="img kit"></div><span>Kitchen interior</span></a>
-    <a class="chip" href="#" data-demo><div class="img cal"></div><span>White marble</span></a>
-    <a class="chip" href="#" data-demo><div class="img trav"></div><span>Ivory Travertine</span></a>
-    <a class="chip" href="#" data-demo><div class="img verde"></div><span>Verde Alpi</span></a>
   </div>
   <h2 class="mt">From inspiration to inquiry.</h2>
 <ol class="sm-process" aria-label="How SlabMatch works"><li><div class="sm-step-top"><span>01</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M4 15v5h16v-5M12 16V3m-5 5 5-5 5 5"/></svg></div><h3>Upload your inspiration photo</h3><p>Start with an interior or stone reference.</p><button class="lnk" data-upload>Choose a clear photo →</button></li><li><div class="sm-step-top"><span>02</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="3" y="3" width="12" height="15"/><path d="M8 7h12v14H8"/></svg></div><h3>Explore matching stone materials</h3><p>Browse preliminary matches by color and veining.</p><button class="lnk" data-go="inventory">Explore the inventory →</button></li><li><div class="sm-step-top"><span>03</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M4 5h16v14H4zM8 12l3 3 6-7"/></svg></div><h3>Select your preferred slabs</h3><p>Compare dimensions, material, and finish.</p><button class="lnk" data-compare-link>Compare slab dimensions →</button></li><li><div class="sm-step-top"><span>04</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M3 4h18v13H9l-6 4zM7 9h10M7 12h7"/></svg></div><h3>Submit your project inquiry</h3><p>Share sizes, finish, and your timeline.</p><button class="lnk" data-go="inquiry">Start your inquiry →</button></li></ol><h2 class="mt">Why SlabMatch</h2>
@@ -72,12 +80,14 @@
   </div>
   <p class="note">Villa and commercial projects abroad.</p>
   <div class="g3 mt2">
-    <a class="card" href="#inventory"><h3>Browse marble products</h3><span class="lnk sm">Types, colors, pricing →</span></a>
+    <a class="card" href="#inventory"><h3>Product catalogue</h3><span class="lnk sm">Types, colors, pricing →</span></a>
     <a class="card" href="#tabletops"><h3>Affordable tabletops</h3><span class="lnk sm">Remnants and bases →</span></a>
     <a class="card" href="#samples"><h3>Request marble samples</h3><span class="lnk sm">Free samples →</span></a>
   </div>
-  <p class="note">Matches are preliminary. Our team confirms every slab.</p>
-  <a class="lnk" href="#process">See the process →</a>
+  <div class="home-path-footer">
+    <p class="note">Matches are preliminary. Our team confirms every slab.</p>
+    <a class="lnk" href="#process">See the process →</a>
+  </div>
 </section>
 
 <!-- 2 REVIEW -->
@@ -146,10 +156,10 @@
       <p class="mu mt2" id="dDesc"></p>
       <div class="mt2" id="dSpec"></div>
       <div class="mt2"><button class="btn w" id="dAdd">+ Add to inquiry</button></div>
-      <div class="mt2"><button class="btn o w" id="dDl">Download specifications</button></div>
+      <div class="mt2"><button class="btn o w" data-sample-current>Request this sample →</button></div><div class="mt2"><button class="btn o w" id="dDl">Download specifications</button></div>
     </div>
   </div>
-<section class="sm-material" aria-labelledby="compare-title"><div class="sm-section-head"><div><p class="eb">A SENSE OF SCALE</p><h2 id="compare-title">Find the right proportions.</h2></div><p>Compare dimensions from the inventory.<br>Each outline uses the same scale.</p></div><label for="compareSlab">Compare with another slab<select id="compareSlab"></select></label><div id="compareFigures" class="sm-figures"></div><p class="note">Gross slab area, before cutting and waste. Thickness: 20 mm. Confirm the final slab with our team.</p></section><section class="sm-measures" aria-labelledby="measures-title"><div class="sm-section-head"><div><p class="eb">MATERIAL / IN NUMBERS</p><h2 id="measures-title">The dimensions that matter.</h2></div><p>Selected slab against the largest dimensions<br>in this inventory. Not a suitability score.</p></div><div id="slabMetrics" class="sm-metric-grid"></div><p class="note">Gross area before cutting and waste. Scale limits come from the current inventory.</p></section>
+
   <h2 class="mt">Material details</h2>
   <div class="ig-tiles">
     <div class="ig-tile"><span class="ig-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l9-8 9 8"/><path d="M5 9.5V21h14V9.5M10 21v-6h4v6"/></svg></span><div><h3>Recommended uses</h3><p>Accent walls, floors, countertops.</p></div></div>
@@ -160,7 +170,14 @@
 </section>
 
 <!-- 6 INQUIRY -->
-<section class="view" id="inquiry">
+<section class="view" id="inquiry"><p class="eb">SLABMATCH / INQUIRY</p><h1>Discuss your project</h1><p class="lead">Send your selection directly to our team.</p><div class="card contact-request">
+  <h2 class="contact-request-title">Selected material</h2>
+  <div data-contact-summary></div>
+  <div class="contact-request-row"><label>Quantity required<select data-contact-qty aria-label="Quantity required"><option value="1">1 slab</option><option value="2">2 slabs</option><option value="3">3 slabs</option><option value="4">4 slabs</option><option value="5">5 slabs</option></select></label></div>
+  <div class="contact-request-row"><span>Estimated slab area</span><strong data-contact-area></strong></div>
+  <label class="contact-request-consent"><input type="checkbox" data-contact-consent required><span>I agree to the Privacy Policy and to be contacted.</span></label>
+  <div class="contact-request-actions"><a class="btn" data-contact-wa target="_blank" rel="noopener">Send to WhatsApp →</a><a class="btn o" data-contact-email>Send to Email →</a></div>
+</div><p class="note">WhatsApp opens a prepared message. Select our contact to send it.</p><a class="lnk mt2" href="#inventory">Choose from the product catalogue →</a><div hidden class="legacy-form">
   <p class="eb">INQUIRY / PROJECT DETAILS</p>
   <h1>Tell us about your project.</h1>
   <p class="lead">We’ll confirm pricing and availability.</p>
@@ -196,7 +213,7 @@
       <div class="card mt2"><h3>What happens next?</h3><div class="mt2"><div class="ig-flow v"><div class="ig-st"><b class="ig-num">01</b><h3>We receive it.</h3></div><div class="ig-st"><b class="ig-num">02</b><h3>We confirm pricing.</h3></div><div class="ig-st"><b class="ig-num">03</b><h3>You decide.</h3></div></div></div></div>
     </div>
   </div>
-</section>
+</div></section>
 
 <!-- 7 SENT -->
 <section class="view" id="sent"><div class="ok">
@@ -252,7 +269,14 @@
 </section>
 
 <!-- 10 SAMPLES -->
-<section class="view" id="samples">
+<section class="view" id="samples"><p class="eb">SLABMATCH / SAMPLE</p><h1>Request a sample</h1><p class="lead">Send your selection directly to our team.</p><div class="card contact-request">
+  <h2 class="contact-request-title">Selected material</h2>
+  <div data-contact-summary></div>
+  <div class="contact-request-row"><label>Quantity required<select data-contact-qty aria-label="Quantity required"><option value="1">1 slab</option><option value="2">2 slabs</option><option value="3">3 slabs</option><option value="4">4 slabs</option><option value="5">5 slabs</option></select></label></div>
+  <div class="contact-request-row"><span>Estimated slab area</span><strong data-contact-area></strong></div>
+  <label class="contact-request-consent"><input type="checkbox" data-contact-consent required><span>I agree to the Privacy Policy and to be contacted.</span></label>
+  <div class="contact-request-actions"><a class="btn" data-contact-wa target="_blank" rel="noopener">Send to WhatsApp →</a><a class="btn o" data-contact-email>Send to Email →</a></div>
+</div><p class="note">WhatsApp opens a prepared message. Select our contact to send it.</p><a class="lnk mt2" href="#inventory">Choose from the product catalogue →</a><div hidden class="legacy-form">
   <p class="eb">SAMPLES / REQUEST</p>
   <h1>Feel the stone. See the difference.</h1>
   <p class="lead">Check color and veining first.</p>
@@ -278,7 +302,7 @@
       <div class="card mt2"><h3>What happens next?</h3><div class="mt2"><div class="ig-flow v"><div class="ig-st"><b class="ig-num">01</b><h3>We review your request.</h3></div><div class="ig-st"><b class="ig-num">02</b><h3>We share courier options.</h3></div><div class="ig-st"><b class="ig-num">03</b><h3>You confirm the cost.</h3></div></div></div></div>
     </div>
   </div>
-</section>
+</div></section>
 
 <!-- 11 TABLETOPS -->
 <section class="view" id="tabletops">
@@ -378,6 +402,6 @@
 
 <footer><span>© 2026 SLABMATCH</span><div><a href="#samples">Samples</a><a href="#production">Production</a><a href="#faq">FAQ</a><a href="https://instagram.com" target="_blank" rel="noopener">Instagram</a></div></footer>
 <div class="toast" id="toast"></div>
-<script src="app.js?v=6"></script>
+<script src="app.js?v=18"></script>
 </body>
 </html>
