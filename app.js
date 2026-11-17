@@ -95,6 +95,8 @@ function renderDetail(){
   $('#dCrumb').textContent=`INVENTORY / ${s.k.toUpperCase()} / ${s.n.toUpperCase()}`;
   $('#dImg').className='img '+s.t;$('#dName').textContent=s.n;$('#dCode').textContent=s.c+' · Natural stone collection';$('#dDesc').textContent=desc(s);
   $('#dSpec').innerHTML=[['Material type',s.k],['Slab dimensions',`${s.w} × ${s.h} cm`],['Thickness','20 mm'],['Finish',s.f],['Color',s.col||'—']].map(r=>`<div class="kv"><span>${r[0]}</span><b>${r[1]}</b></div>`).join('');
+  renderComparison();
+  renderSlabMetrics();
 }
 $('#dAdd').onclick=()=>{if(!S.sel.includes(S.cur))S.sel=[...S.sel,S.cur];S.cur=S.cur;toast('Added to inquiry');go('inquiry')};
 $('#dDl').onclick=()=>{const s=S.cur,b=new Blob([`${s.n} (${s.c})\nType: ${s.k}\nSize: ${s.w} x ${s.h} cm\nThickness: 20 mm\nFinish: ${s.f}\nColor: ${s.col}\n`],{type:'text/plain'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=s.c+'-specs.txt';a.click();toast('Specifications downloaded')};
@@ -162,51 +164,104 @@ $('#faqList').addEventListener('click',e=>{const b=e.target.closest('button');if
 
 renderTops();route();
 
-/* ===== scroll reveal (added) =====
-   Elemen muncul saat masuk layar, dan menghilang lagi saat keluar:
-   scroll ke bawah -> yang di bawah muncul; scroll ke atas -> yang di atas muncul,
-   yang keluar layar disembunyikan lagi sehingga animasi selalu berulang. */
+
+/* Infographics: use inventory values as the single source of truth. */
+function renderComparison(){
+  const select=$('#compareSlab');
+  const previous=select.value;
+  select.innerHTML=slabs.filter(s=>s!==S.cur).map(s=>`<option value="${s.c}">${s.n} · ${s.c}</option>`).join('');
+  if(previous!==S.cur.c&&slabs.some(s=>s.c===previous))select.value=previous;
+  drawComparison();
+}
+function drawComparison(){
+  const other=slabs.find(s=>s.c===$('#compareSlab').value)||slabs.find(s=>s!==S.cur);
+  $('#compareFigures').innerHTML=[S.cur,other].map((s,i)=>{
+    // A fixed 320 × 180 cm reference keeps both drawings proportional.
+    const w=s.w*.85,h=s.h*.85,x=(340-w)/2,y=190-h;
+    return `<figure class="sm-figure"><svg viewBox="0 0 340 224" role="img" aria-label="${s.n}: ${s.w} by ${s.h} centimeters"><rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${i?'#171511':'#1e1b15'}" stroke="#bfa066" stroke-width="1"/><path d="M${x} 204h${w}m0 -4v8m${-w} -8v8" stroke="#63563d" fill="none"/><text x="170" y="220" text-anchor="middle">${s.w} cm</text><text x="170" y="${y-10}" text-anchor="middle">${s.h} cm height</text></svg><figcaption><div><p>${i?'COMPARE WITH':'SELECTED SLAB'} · ${s.c}</p><h3>${s.n}</h3><p>${s.k} · ${s.f}</p></div><div class="sm-area">${area(s,1)}<small> m²</small></div></figcaption>${i?`<button class="lnk" data-slab="${s.c}">View this slab →</button>`:'<p class="note">Dimensions shown to scale.</p>'}</figure>`;
+  }).join('');
+}
+$('#compareSlab').addEventListener('change',drawComparison);
+document.addEventListener('click',e=>{
+  if(e.target.closest('[data-upload]'))$('#file').click();
+  if(e.target.closest('[data-compare-link]'))go('detail');
+  // Hash routing does not fire when a comparison opens another slab on #detail.
+  if(e.target.closest('#compareFigures [data-slab]'))renderDetail();
+});
+
+/* Segmented measurements use actual slab values and inventory maxima. */
+function renderSlabMetrics(){
+  const s=S.cur;
+  const metrics=[
+    {label:'Slab width',value:s.w,max:Math.max(...slabs.map(x=>x.w)),unit:'cm',note:'Across the face of the slab'},
+    {label:'Slab height',value:s.h,max:Math.max(...slabs.map(x=>x.h)),unit:'cm',note:'Along the shorter dimension'},
+    {label:'Gross slab area',value:s.w*s.h/1e4,max:Math.max(...slabs.map(x=>x.w*x.h/1e4)),unit:'m²',note:'Before cutting and fabrication'}
+  ];
+  $('#slabMetrics').innerHTML=metrics.map(m=>{
+    const n=m.unit==='m²'?m.value.toFixed(2):m.value;
+    const segments=Array.from({length:24},(_,i)=>{
+      const fraction=Math.max(0,Math.min(1,m.value/m.max*24-i));
+      return `<i><span style="--fill:${fraction}"></span></i>`;
+    }).join('');
+    return `<article class="sm-metric"><div class="sm-scale" aria-hidden="true"><span>0</span><span>${m.max} ${m.unit}</span></div><div class="sm-segments" role="img" aria-label="${m.label}: ${n} ${m.unit}, scale maximum ${m.max} ${m.unit}">${segments}</div><p class="sm-metric-value">${n}<small>${m.unit}</small></p><h3>${m.label}</h3><p>${m.note}</p></article>`;
+  }).join('');
+}
+
+
+/* One reversible scroll controller for every routed page and dynamic grid.
+   No layout changes; out-of-view content stays in the accessibility tree.
+   Special infographics replay their own sequence on each re-entry. */
 (()=>{
   if(!('IntersectionObserver' in window))return;
-  const SEL='.view > *:not(.g2):not(.g3):not(.g4):not(.split):not(.hero):not(#faqList),.view > .g2 > *,.view > .g3 > *,.view > .g4 > *,.view > .split > *,.view > .hero > *,.view > #faqList > *';
-  let routeAt=performance.now();
-  addEventListener('hashchange',()=>{routeAt=performance.now()});
-  const io=new IntersectionObserver(es=>es.forEach(({target:el,isIntersecting,boundingClientRect:r})=>{
-    if(isIntersecting)el.classList.add('in');
-    else{el.style.setProperty('--ty',r.top>0?'32px':'-32px');el.classList.remove('in','now')}
-  }),{rootMargin:'-56px 0px -6% 0px'});
+  const motion=matchMedia('(prefers-reduced-motion: reduce)');
+  const targets=new Set();
+  const selector=[
+    '.view > :not(.hero):not(.split):not(.g2):not(.g3):not(.g4):not(.ig-stages):not(#faqList)',
+    '.view > .hero > *','.view > .split > *',
+    '.view > .g2 > *','.view > .g3 > *','.view > .g4 > *',
+    '.view > .ig-stages > *','.view > #faqList > *'
+  ].join(',');
+  function state(el,visible){
+    el.classList.toggle('sm-scroll-visible',visible);
+    if(el.matches('.sm-atlas'))el.classList.toggle('sm-atlas-play',visible);
+    if(el.matches('.sm-road'))el.classList.toggle('sm-road-play',visible);
+  }
+  const observer=new IntersectionObserver(entries=>{
+    for(const {target,isIntersecting} of entries){
+      state(target,motion.matches||isIntersecting||target.contains(document.activeElement));
+    }
+  },{rootMargin:'-56px 0px -20px 0px',threshold:0});
   function scan(){
-    $$(SEL).filter(el=>!el._rv).forEach(el=>{
-      el._rv=1;
-      const p=el.parentNode;
-      const i=p.classList.contains('view')?0:[...p.children].filter(c=>c.matches(SEL)).indexOf(el);
-      el.style.setProperty('--d',Math.min(i,6)*70+'ms');
+    for(const el of targets)if(!el.isConnected){observer.unobserve(el);targets.delete(el)}
+    document.querySelectorAll(selector).forEach(el=>{
+      if(targets.has(el))return;
+      targets.add(el);
+      el.classList.add('sm-scroll-item');
+      if(el.matches('.sm-atlas'))el.classList.add('sm-atlas-ready');
+      if(el.matches('.sm-road'))el.classList.add('sm-road-ready');
       const r=el.getBoundingClientRect();
-      el.classList.add('rv');
-      /* re-render di halaman yang sama (mis. klik ♡) tidak perlu animasi ulang */
-      if(r.height>0&&r.top<innerHeight&&r.bottom>0&&performance.now()-routeAt>600)el.classList.add('in','now');
-      io.observe(el);
+      state(el,motion.matches||(r.height>0&&r.bottom>56&&r.top<innerHeight-20));
+      observer.observe(el);
     });
   }
-  new MutationObserver(scan).observe($('main'),{childList:true,subtree:true});
+  let pending=false;
+  new MutationObserver(()=>{
+    if(pending)return;
+    pending=true;requestAnimationFrame(()=>{pending=false;scan()});
+  }).observe($('main'),{childList:true,subtree:true});
+  document.addEventListener('focusin',event=>{
+    const el=event.target.closest('.sm-scroll-item');
+    if(el){el.classList.add('sm-focus-reveal');state(el,true)}
+  });
+  document.addEventListener('focusout',event=>{
+    const el=event.target.closest('.sm-scroll-item');
+    if(el&&!el.contains(event.relatedTarget))el.classList.remove('sm-focus-reveal');
+  });
+  motion.addEventListener('change',()=>{
+    for(const el of targets){
+      const r=el.getBoundingClientRect();
+      state(el,motion.matches||(r.height>0&&r.bottom>56&&r.top<innerHeight-20));
+    }
+  });
   scan();
-})();
-
-/* ===== infographics: count-up angka (added) ===== */
-(()=>{
-  if(!('IntersectionObserver' in window))return;
-  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const run=el=>{
-    const to=+el.dataset.to,s=el.querySelector('span');if(!s)return;
-    cancelAnimationFrame(el._raf);
-    if(reduce){s.textContent=to;return}
-    const t0=performance.now(),d=1100;
-    const f=t=>{const p=Math.min((t-t0)/d,1),e=1-Math.pow(1-p,3);s.textContent=Math.round(to*e);if(p<1)el._raf=requestAnimationFrame(f)};
-    el._raf=requestAnimationFrame(f);
-  };
-  const io=new IntersectionObserver(es=>es.forEach(({target:el,isIntersecting})=>{
-    if(isIntersecting)run(el);
-    else{cancelAnimationFrame(el._raf);const s=el.querySelector('span');if(s)s.textContent=0}
-  }),{rootMargin:'-56px 0px -6% 0px'});
-  $$('.ig-num[data-to]').forEach(el=>io.observe(el));
 })();
