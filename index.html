@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SlabMatch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header><div class="wrap">
+  <a href="#home" class="logo">SLAB<i>MATCH</i></a>
+  <div class="hr"><a href="#samples" class="btn s" id="reqBtn">Request samples</a><button class="btn k s" id="menuBtn" aria-label="Menu">☰ Menu</button></div>
+</div></header>
+
+<div class="drawer" id="drawer"><nav>
+  <a href="#home">Home</a><a href="#inventory">Inventory</a><a href="#tabletops">Tabletops</a><a href="#inspiration">Inspiration</a><a href="#process">Process</a><a href="#production">Production</a><a href="#about">About</a><a href="#faq">FAQ</a><a href="#inquiries">My inquiries</a><a href="#samples">Request samples</a>
+</nav></div>
+
+<main class="wrap">
+
+<!-- 1 HOME -->
+<section class="view" id="home">
+  <div class="hero">
+    <div>
+      <p class="eb">NATURAL STONE. HUMAN EXPERTISE.</p>
+      <h1>Your inspiration.<br>Extraordinary stone.</h1>
+      <p class="lead">Match a photo to real materials, or let our on-ground team source marble across China’s quarries and markets for your project abroad.</p>
+      <div class="cta">
+        <button class="btn" id="pick">Choose interior photo ↑</button>
+        <button class="btn o" id="snap">Take photo</button>
+      </div>
+      <input type="file" id="file" accept="image/jpeg,image/png,image/webp" hidden>
+      <input type="file" id="cam" accept="image/*" capture="environment" hidden>
+      <p class="drop mu sm" id="drop">or drop a photo here · JPG, PNG, WEBP · Max. 20 MB</p>
+      <button class="lnk" data-demo>Try demo preview →</button>
+      <p class="sm mu mt2">Your photos stay private. No sign-up required.</p>
+    </div>
+    <div class="img room"><div class="cap"><span class="gold">FROM PHOTO TO PROJECT</span><br>Slab matching · Sourcing · Fabrication · Export</div></div>
+  </div>
+  <div class="trust"><span>On-ground slab inspection</span><span>Human-reviewed within 24 hours</span><span>Samples before commitment</span><span>Export &amp; shipping support</span></div>
+  <h2>Start with a little inspiration.</h2>
+  <p class="lead" style="margin-bottom:16px">No photo yet? Explore a surface or use our sample kitchen.</p>
+  <div class="g4">
+    <a class="chip" href="#" data-demo><div class="img kit"></div><span>Kitchen interior</span></a>
+    <a class="chip" href="#" data-demo><div class="img cal"></div><span>White marble</span></a>
+    <a class="chip" href="#" data-demo><div class="img trav"></div><span>Ivory Travertine</span></a>
+    <a class="chip" href="#" data-demo><div class="img verde"></div><span>Verde Alpi</span></a>
+  </div>
+  <h2 class="mt">One place, from inspiration to inquiry.</h2>
+  <div class="g3">
+    <div class="card"><span class="num">01</span><h3>Match your photo</h3><p>Upload a photo and explore visually similar materials.</p></div>
+    <div class="card"><span class="num">02</span><h3>Explore the inventory</h3><p>Compare slab photos, specifications, and availability.</p></div>
+    <div class="card"><span class="num">03</span><h3>Send your inquiry</h3><p>Tell us your sizes, finish, quantity, and project timeline.</p></div>
+  </div>
+  <div class="g2 mt2">
+    <div class="card"><h3>Why SlabMatch</h3><p>Hand-selected by our on-ground team.<br>Sourcing beyond stock when the look is not right.<br>Fabrication, QC, export, and shipping in one place.</p></div>
+    <div class="card"><h3>Made for your project</h3><p>Architects, designers, builders, and homeowners.<br>Villa and commercial projects abroad.<br>Plan lead time for China production and shipping.</p></div>
+  </div>
+  <div class="g3 mt2">
+    <a class="card" href="#inventory"><h3>Browse marble products</h3><span class="lnk sm">Stone types, colors, and sample pricing →</span></a>
+    <a class="card" href="#tabletops"><h3>Affordable tabletops</h3><span class="lnk sm">Pre-cut remnants and matching bases →</span></a>
+    <a class="card" href="#samples"><h3>Request marble samples</h3><span class="lnk sm">Free samples; courier shipping applies →</span></a>
+  </div>
+  <p class="note">Matches are preliminary. Our team confirms each slab in person; request a physical sample before ordering.</p>
+  <a class="lnk" href="#process">See the complete sourcing process →</a>
+</section>
+
+<!-- 2 REVIEW -->
+<section class="view" id="review">
+  <p class="eb">PHOTO MATCH / REVIEW PHOTO</p>
+  <h1>A clear photo. A closer match.</h1>
+  <p class="lead">Review your inspiration before exploring visually similar materials.</p>
+  <div class="steps"><span class="on">01 Upload photo</span><span>02 Match results</span><span>03 Inquiry</span></div>
+  <div class="split eq">
+    <div><div class="img kit" id="revBox" style="aspect-ratio:1.55/1"></div><p class="sm mu mt2" id="revName">kitchen-inspiration.jpg</p></div>
+    <div class="card">
+      <h3>Your photo is ready</h3>
+      <p class="sm" style="margin-top:18px"><b>For the most relevant results</b></p>
+      <p class="mt2">• Keep the stone surface in focus.<br>• Use natural, even lighting.<br>• Avoid heavy filters and reflections.<br>• Include the color and veining clearly.</p>
+      <div class="mt2"><button class="btn w" data-go="results">Find matching materials →</button></div>
+      <div class="mt2"><button class="btn o w" id="replace">Replace photo</button></div>
+      <p class="note">Matching is visual and preliminary. Every final shortlist is reviewed by our team.</p>
+    </div>
+  </div>
+  <div class="card mt2"><h3 style="font-size:14px">Private by design</h3><p>Your photo is used to prepare your material inquiry. No account is required.</p></div>
+</section>
+
+<!-- 3 RESULTS -->
+<section class="view" id="results">
+  <p class="eb">PHOTO MATCH / MATCH RESULTS</p>
+  <h1>Your inspiration, your material options.</h1>
+  <p class="lead">Choose a material you like to view details or send an inquiry.</p>
+  <div class="steps"><span>1 Upload photo</span><span class="on">2 Match results</span><span>3 Inquiry</span></div>
+  <div class="split s24">
+    <div class="card"><h3>Your photo</h3><div class="img kit mt2" id="resBox" style="aspect-ratio:1.45/1"></div>
+      <p class="mt2 sm"><b>Identified surface</b></p><p class="gold sm">Kitchen countertop</p>
+      <p class="sm mu mt2">Dominant colors: ivory, sand, taupe<br>Tip: focus the photo on the material for more relevant results.</p>
+      <button class="btn o s mt2" data-go="review">Change photo</button></div>
+    <div>
+      <p class="sm" style="margin-bottom:8px"><b>4 similar materials</b> <span class="mu">· Sample results · Visual similarity</span></p>
+      <div class="g2" id="resGrid"></div>
+      <div class="card bar mt2"><span id="resSel"></span><button class="btn" id="resNext">Continue to inquiry →</button></div>
+    </div>
+  </div>
+  <p class="note">Visual matches are preliminary. Our team manually reviews and confirms every shortlisted slab.</p>
+</section>
+
+<!-- 4 INVENTORY -->
+<section class="view" id="inventory">
+  <p class="eb">SLABMATCH / INVENTORY</p>
+  <h1>Find a slab for your space.</h1>
+  <p class="lead">Explore materials, compare specifications, and check availability.</p>
+  <input id="q" type="search" placeholder="Search material name or slab code…" aria-label="Search">
+  <p class="note" id="invCount"></p>
+  <div class="g4" id="invGrid"></div>
+  <h2 class="mt">Sourced marble collection</h2>
+  <p class="lead" style="margin-bottom:16px">Explore six additional stone references from our sourcing network.</p>
+  <div class="g4" id="srcGrid"></div>
+  <p class="note">Sample prices for reference only. Final pricing, stock, and slab selection are confirmed at the yard.</p>
+</section>
+
+<!-- 5 DETAIL -->
+<section class="view" id="detail">
+  <p class="eb" id="dCrumb"></p>
+  <div class="split eq">
+    <div class="img" id="dImg" style="aspect-ratio:1.55/1"></div>
+    <div class="card">
+      <span class="tag" style="position:static;display:inline-block;margin-bottom:12px">Available · 1 slab</span>
+      <h1 id="dName" style="font-size:30px"></h1>
+      <p class="sm mu" id="dCode"></p>
+      <p class="mu mt2" id="dDesc"></p>
+      <div class="mt2" id="dSpec"></div>
+      <div class="mt2"><button class="btn w" id="dAdd">+ Add to inquiry</button></div>
+      <div class="mt2"><button class="btn o w" id="dDl">Download specifications</button></div>
+    </div>
+  </div>
+  <h2 class="mt">Discover the material’s character.</h2>
+  <div class="g3">
+    <div class="card"><h3>Recommended uses</h3><p>Accent walls, interior floors, and countertops. Discuss wet-area requirements with our team.</p></div>
+    <div class="card"><h3>Everyday care</h3><p>Use a pH-neutral cleaner and a soft cloth. Avoid acidic liquids and abrasive products.</p></div>
+    <div class="card"><h3>Every slab is unique</h3><p>Colors and patterns may vary naturally. Request a sample before making your choice.</p></div>
+  </div>
+  <p class="note">Application photos are for inspiration only. Final availability is confirmed upon inquiry.</p>
+</section>
+
+<!-- 6 INQUIRY -->
+<section class="view" id="inquiry">
+  <p class="eb">INQUIRY / PROJECT DETAILS</p>
+  <h1>Tell us about your project.</h1>
+  <p class="lead">Complete the details below. Our team will help with pricing and availability.</p>
+  <div class="split w2">
+    <form class="card" id="form" novalidate>
+      <h3>01 Contact information</h3>
+      <div class="fg mt2">
+        <div><label>Full name *<input name="name" placeholder="Andi Pratama" required></label><p class="errm">Required</p></div>
+        <div><label>Email *<input name="email" type="email" placeholder="andi@example.com" required></label><p class="errm">Enter a valid email</p></div>
+        <div><label>WhatsApp number *<input name="wa" type="tel" placeholder="0812 0000 0000" required></label><p class="errm">Required</p></div>
+        <div><label>I am a<select name="role"><option>Homeowner</option><option>Architect</option><option>Designer</option><option>Builder</option></select></label></div>
+      </div>
+      <h3>02 About the project</h3>
+      <div class="fg mt2">
+        <div><label>Project type *<select name="type"><option>Kitchen renovation</option><option>Villa project</option><option>Commercial project</option><option>Tabletop</option></select></label></div>
+        <div><label>Project location *<input name="loc" placeholder="South Jakarta" required></label><p class="errm">Required</p></div>
+        <div><label>Project timeline<select name="time"><option>1–3 months</option><option>3–6 months</option><option>6+ months</option></select></label></div>
+        <div><label>Material quantity<select name="qty" id="qty"><option value="1">1 slab</option><option value="2">2 slabs</option><option value="3">3 slabs</option><option value="4">4 slabs</option><option value="5">5 slabs</option></select></label></div>
+        <div class="full"><label>Message to our team<textarea name="msg"></textarea></label></div>
+        <div class="full"><label>Additional attachments (optional)<input type="file"></label></div>
+      </div>
+    </form>
+    <div>
+      <div class="card">
+        <h3>Selected material</h3>
+        <div class="mat mt2"><div class="thumb" id="iThumb"></div><div><b id="iName"></b><p class="sm mu" id="iSpec"></p></div></div>
+        <div class="kv"><span>Quantity required</span><b id="iQty"></b></div>
+        <div class="kv"><span>Estimated slab area</span><b id="iArea"></b></div>
+        <label class="chk"><input type="checkbox" id="agree"> I agree to the Privacy Policy and consent to being contacted about this inquiry.</label>
+        <p class="errm" id="agreeErr">Please accept to continue.</p>
+        <button class="btn w" id="send">Send inquiry →</button>
+      </div>
+      <div class="card mt2"><h3>What happens next?</h3><p class="mt2">1 Our team receives your inquiry.<br>2 We confirm pricing and availability.<br>3 You decide the next steps.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 7 SENT -->
+<section class="view" id="sent"><div class="ok">
+  <div class="tick">✓</div>
+  <h1>Inquiry sent successfully!</h1>
+  <p class="lead" style="margin:0 auto"><span id="sThanks"></span><br>Our team will contact you to discuss your project details.</p>
+  <div class="card">
+    <div class="bar kv"><b id="sNo"></b><span id="sDate"></span></div>
+    <div class="mat mt2"><div class="thumb" id="sThumb" style="width:82px;height:72px"></div><div><b id="sName"></b><p class="sm mu" id="sInfo"></p></div></div>
+    <p class="sm"><b>Your inquiry journey</b><br><span class="gold">✓ Inquiry sent</span> — 2 Team review — 3 We’ll contact you</p>
+  </div>
+  <p class="sm mu" style="margin-bottom:20px">A copy of your inquiry was sent to <span id="sMail"></span>. Keep your inquiry number for easy follow-up.</p>
+  <div class="cta" style="justify-content:center"><a class="btn" href="#inventory">Explore inventory →</a><a class="btn o" href="#home">Match another photo</a></div>
+  <p class="mt2"><a class="lnk" href="#home">Back to home</a></p>
+</div></section>
+
+<!-- 8 MY INQUIRIES -->
+<section class="view" id="inquiries">
+  <div class="bar" style="align-items:flex-start"><div><p class="eb">YOUR PROJECTS / INQUIRIES</p><h1>My inquiries</h1><p class="mu" style="margin:0">Keep your material choices and project details together.</p></div><a class="btn" href="#inventory">Start a new inquiry +</a></div>
+  <div class="card mt2" style="padding:18px 22px"><p>Saved on this device only. Keep your inquiry number for follow-up, or use the copy sent to your email.</p></div>
+  <h3 id="inqHead" style="font-size:18px;margin:28px 0 12px"></h3>
+  <div class="g2 inq">
+    <div id="inqList"></div>
+    <div class="card"><h3>Your next step</h3><p class="mt2">Our team checks each shortlisted slab in person and follows up within 24 hours. Include your inquiry number when you contact us.</p><a class="btn s mt2" href="#about">Talk to our team →</a></div>
+  </div>
+  <h2 class="mt">What happens after you send an inquiry?</h2>
+  <div class="g3">
+    <div class="card"><span class="num">01</span><h3>Human review</h3><p>Our team checks the material and your project requirements.</p></div>
+    <div class="card"><span class="num">02</span><h3>Confirmed options</h3><p>Receive availability, pricing, and a refined shortlist.</p></div>
+    <div class="card"><span class="num">03</span><h3>Your decision</h3><p>Request a sample or discuss fabrication and export.</p></div>
+  </div>
+</section>
+
+<!-- 9 INQUIRY DETAIL -->
+<section class="view" id="idetail">
+  <p class="eb" id="xCrumb"></p>
+  <h1>Your project, in detail.</h1>
+  <p class="lead" id="xSub"></p>
+  <div class="split eq">
+    <div class="img kit" id="xImg" style="aspect-ratio:1.55/1"></div>
+    <div class="card">
+      <h2 id="xName"></h2><p class="sm mu" id="xSpec"></p>
+      <p class="eb mt2">PROJECT</p><p id="xProj"></p>
+      <p class="eb mt2">QUANTITY &amp; TIMELINE</p><p id="xQty"></p>
+      <div class="cta mt2"><a class="btn s" style="background:#25895e;border-color:#25895e;color:#fff" href="https://wa.me/" target="_blank" rel="noopener">WhatsApp</a><a class="btn s" style="background:#3f5a94;border-color:#3f5a94;color:#fff" href="mailto:hello@slabmatch.com">Email our team</a></div>
+    </div>
+  </div>
+  <div class="card mt2"><h3>Your notes</h3><p id="xMsg"></p></div>
+  <h2 class="mt">Matching slabs</h2>
+  <p class="lead" style="margin-bottom:16px">Preliminary options; our team confirms availability and appearance in person.</p>
+  <div class="g3" id="xMatch"></div>
+  <a class="lnk mt2" href="#inventory">Also in stock: Verde Alpi and additional Calacatta Gold slabs. Browse the full inventory →</a>
+</section>
+
+<!-- 10 SAMPLES -->
+<section class="view" id="samples">
+  <p class="eb">SAMPLES / REQUEST</p>
+  <h1>Feel the stone. See the difference.</h1>
+  <p class="lead">Confirm color, texture, and veining before you commit.</p>
+  <div class="split eq">
+    <form class="card" id="sform" novalidate>
+      <h3>Tell us what you have in mind</h3>
+      <div class="fg mt2">
+        <div><label>Name / company<input placeholder="Your name or company"></label></div>
+        <div><label>You are inquiring as<select><option>Architect</option><option>Designer</option><option>Builder</option><option>Homeowner</option></select></label></div>
+        <div class="full"><label>Stone or marble type of interest<input placeholder="e.g. Calacatta Gold, or describe the look you want"></label></div>
+        <div><label>Project type<select><option>Villa living area</option><option>Commercial project</option><option>Kitchen</option></select></label></div>
+        <div><label>Destination country / city<input placeholder="Where should we ship your samples?"></label></div>
+        <div><label>WhatsApp number<input id="swa" type="tel" placeholder="+65 9xxx xxxx"></label></div>
+        <div><label>Email address<input id="sem" type="email" placeholder="you@example.com"></label></div>
+        <p class="sm mu full" id="sHint" style="margin-top:-4px">Please provide at least one contact method so we can reply.</p>
+        <div class="full"><label>Notes<textarea placeholder="Finish, sizes, quantity, target timeline…"></textarea></label></div>
+      </div>
+      <p class="sm mu" style="margin-bottom:12px">By sending this request, you agree to be contacted about your sample.</p>
+      <button class="btn w" type="submit">Send sample request →</button>
+    </form>
+    <div>
+      <div class="card"><div class="img cal" style="aspect-ratio:3.2/1"></div><h3 class="mt2">Your sample, thoughtfully prepared.</h3><p>Samples are free for genuine buyers. You cover courier shipping; we confirm the cost before dispatch.</p><p class="sm mt2">Every slab is unique. A sample helps you assess the material, but the final slab is confirmed separately.</p></div>
+      <div class="card mt2"><h3>What happens next?</h3><p class="mt2">01 We review your material request.<br>02 We share sample and courier options.<br>03 You confirm the cost before dispatch.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 11 TABLETOPS -->
+<section class="view" id="tabletops">
+  <p class="eb">COLLECTIONS / TABLETOPS</p>
+  <h1>A remarkable table. A considered price.</h1>
+  <p class="lead">Pre-cut marble remnants, matched to your size and paired with the right base.</p>
+  <div class="img dine" style="aspect-ratio:3.8/1;margin-bottom:24px"></div>
+  <h2>Make more of beautiful stone.</h2>
+  <p class="lead">Remnant and leftover slabs are already cut for a lower price per top. We match the size you need and suggest a suitable base. Ask for current remnant photos before ordering.</p>
+  <h2>Choose your tabletop</h2>
+  <div class="flt" id="shapes"></div>
+  <div class="g4" id="topGrid"></div>
+  <div class="card mt2"><h3>Have a different size in mind?</h3><p>Send your dimensions, preferred shape, and finish. Our team will check suitable remnants and base compatibility.</p><a class="lnk sm mt2" href="#inquiry">Discuss your tabletop →</a></div>
+  <h2 class="mt">Complete it with a base</h2>
+  <p class="lead" style="margin-bottom:16px">Confirm dimensions and load rating with the workshop before ordering.</p>
+  <div class="g4" id="baseGrid"></div>
+  <p class="note">Sizes, finishes, and prices are sample data only. Confirm dimensions, load rating, and price with the workshop.</p>
+  <div class="card bar"><div><h3>Let’s make the right match.</h3><p>Your stone, your dimensions, your project.</p></div><a class="btn" href="#inquiry">Start a tabletop inquiry →</a></div>
+</section>
+
+<!-- 12 INSPIRATION -->
+<section class="view" id="inspiration">
+  <p class="eb">INSPIRATION / PROJECT REFERENCES</p>
+  <h1>Stone that transforms a space.</h1>
+  <p class="lead">Explore residential and commercial applications, from bookmatched walls to custom dining tables.</p>
+  <div class="split f18">
+    <div class="img room" style="aspect-ratio:1.68/1"></div>
+    <div class="card" style="height:100%"><p class="eb">FEATURED APPLICATION</p><h2 style="font-size:28px">A statement in<br>natural stone.</h2><p>Bookmatched Calacatta Gold pairs create a continuous feature wall, bringing movement and warmth to a residential living room.</p><p class="sm mu mt2">Singapore · Residential reference</p><a class="lnk sm mt2" href="#samples">Source a similar look →</a></div>
+  </div>
+  <h2 class="mt">Explore the details</h2>
+  <div class="g3">
+    <div class="card"><div class="img room" style="aspect-ratio:2/1"></div><h3 class="mt2">Bookmatched feature wall</h3><p class="gold sm">Calacatta Gold</p><p class="sm">Residential living room · Singapore<br>Bookmatched pair, polished finish behind the TV.</p></div>
+    <div class="card"><div class="img rdine" style="aspect-ratio:2/1"></div><h3 class="mt2">Calacatta dining set</h3><p class="gold sm">Calacatta White</p><p class="sm">Urban apartment · Singapore<br>Rectangular top with a black X-frame base.</p></div>
+    <div class="card"><div class="img lounge" style="aspect-ratio:2/1"></div><h3 class="mt2">Marble lounge feature</h3><p class="gold sm">Calacatta Gold</p><p class="sm">Showroom lounge<br>Curved wall panels, honed finish.</p></div>
+  </div>
+  <p class="note">Project photos and details are sample references, not verified completed projects.</p>
+  <div class="card bar"><h3 style="margin:0">Have a space in mind?</h3><a class="lnk" href="#inquiry">Send us your reference →</a></div>
+</section>
+
+<!-- 13 PROCESS -->
+<section class="view" id="process">
+  <p class="eb">THE PROCESS / HOW IT WORKS</p>
+  <h1>From first photo to final shipment.</h1>
+  <p class="lead">An end-to-end sourcing process for international buyers — with people behind every selection.</p>
+  <div class="card" style="margin-bottom:12px"><h3>Every slab is unique.</h3><p>Options are preliminary. Our team validates each piece in person before confirmation.</p></div>
+  <div class="g4">
+    <div class="card"><span class="num">01</span><h3>Submit your inquiry</h3><p>Share a stone name or photo, sizes, finish, and timeline.</p></div>
+    <div class="card"><span class="num">02</span><h3>Review preliminary options</h3><p>Explore a catalogue shortlist based on name and appearance.</p></div>
+    <div class="card"><span class="num">03</span><h3>Human review · 24 hours</h3><p>Our team inspects candidates and confirms availability.</p></div>
+    <div class="card"><span class="num">04</span><h3>Select &amp; source</h3><p>Review photos and pricing; we can source other suppliers or quarries.</p></div>
+    <div class="card"><span class="num">05</span><h3>Request a sample</h3><p>Samples are free for genuine buyers; courier shipping is paid by you.</p></div>
+    <div class="card"><span class="num">06</span><h3>QC &amp; dry lay</h3><p>Digital and physical dry-lay, with video before packing.</p></div>
+    <div class="card"><span class="num">07</span><h3>Confirm payment</h3><p>Procurement is paid in full; fabrication is paid in full before shipping.</p></div>
+    <div class="card"><span class="num">08</span><h3>Fabricate &amp; export</h3><p>Production, inspection, packing, documents, and shipping. Factory visits welcome.</p></div>
+  </div>
+  <h2 class="mt">Start with a reference. We’ll help with the rest.</h2>
+  <div class="cta"><a class="btn" href="#samples">Request a sample →</a><a class="btn o" href="#about">Speak to our team →</a></div>
+</section>
+
+<!-- 14 ABOUT -->
+<section class="view" id="about">
+  <p class="eb">ABOUT / SLABMATCH</p>
+  <h1>A local eye. A global perspective.</h1>
+  <p class="lead">Marble sourcing and matching for villa and commercial projects abroad.</p>
+  <div class="split eq">
+    <div class="img team" style="aspect-ratio:1.56/1"></div>
+    <div><h2>Your team on the ground.</h2><p class="mu">We source across China’s stone quarries and markets, helping you find the right material without needing to be there in person.</p><p class="mu mt2">China is a major manufacturing base for international marble. Our range covers both Chinese and imported stones, with each shortlisted slab checked by our team.</p><p class="gold sm mt2">From first inspiration to export-ready stone.</p></div>
+  </div>
+  <div class="g3 mt2">
+    <div class="card stat"><b>China</b><span class="mu sm">Quarries &amp; markets</span></div>
+    <div class="card stat"><b>24h</b><span class="mu sm">Human follow-up</span></div>
+    <div class="card stat"><b>End-to-end</b><span class="mu sm">Sourcing to export</span></div>
+  </div>
+  <h2 class="mt">What our team brings to your project</h2>
+  <div class="g3">
+    <div class="card"><span class="num">01</span><h3>Shortlist, human-validated</h3><p>Send a photo or stone name. Our team checks each candidate slab in person.</p></div>
+    <div class="card"><span class="num">02</span><h3>On-ground sourcing &amp; inspection</h3><p>Veins, cracks, finish, and thickness checked. We source other suppliers or quarries when needed.</p></div>
+    <div class="card"><span class="num">03</span><h3>Fabrication, QC &amp; export</h3><p>Cutting, bookmatching, dry-lay QC, packing, and shipping. Standalone QC is also available for China sourcing.</p></div>
+  </div>
+  <p class="note">Company information is draft material for review before publication.</p>
+  <a class="lnk" href="#inquiry">Tell us about your project →</a>
+</section>
+
+<!-- 15 PRODUCTION -->
+<section class="view" id="production">
+  <p class="eb">CRAFT / PRODUCTION TECHNIQUES</p>
+  <h1>Natural material. Precise execution.</h1>
+  <p class="lead">From digital layout to shaped, carved, and patterned finishes — made for your project.</p>
+  <div class="img team" style="aspect-ratio:4.5/1"></div>
+  <h2 class="gold mt">01 Planning &amp; measurement</h2>
+  <div class="g2"><div class="card"><h3>Marble scanning &amp; digital dry-lay</h3><p>Slabs are scanned and digitally arranged against your floor plan, so cutting and veining are planned before any stone is cut.</p></div><div class="card"><h3>Cutting &amp; polishing to site measurements</h3><p>Slabs are cut to the measured dimensions of the site and polished to the required finish.</p></div></div>
+  <h2 class="gold mt">02 Lamination onto substrates</h2>
+  <div class="g3"><div class="card"><h3>Honeycomb panel</h3><p>Lightweight panels for facades. Also used for sinks so the piece ships rigid as one unit.</p></div><div class="card"><h3>Sintered stone</h3><p>Placed under marble floors to block rising moisture and protect light marble from rust stains and ground-up humidity.</p></div><div class="card"><h3>Polycarbonate</h3><p>Used with backlighting to illuminate more marble types while keeping the installation light and easy to fit.</p></div></div>
+  <h2 class="gold mt">03 Shaping &amp; carving</h2>
+  <div class="g2"><div class="card"><h3>Curved marble features</h3><p>Single or multiple curves, carved from a solid block or assembled from sections and polished into a continuous surface.</p></div><div class="card"><h3>Artwork &amp; relief carving</h3><p>Features and artwork carved from thick marble, from shallow relief to deeper bas-relief sculpture.</p></div></div>
+  <h2 class="gold mt">04 Pattern &amp; inlay work</h2>
+  <div class="g2"><div class="card"><h3>Marble marquetry (stone inlay)</h3><p>Patterns inlaid into tabletops or floors. Combine different marbles in a custom pattern or artwork.</p></div><div class="card"><h3>Marble mosaic</h3><p>Made to order from different marbles and patterns, or selected from our existing mosaic range, slab types, and colors.</p></div></div>
+  <p class="note mt">Discuss fabrication, standalone QC, or a factory visit with our team. <a class="lnk" href="#inquiry">Discuss your project →</a></p>
+</section>
+
+<!-- 16 FAQ -->
+<section class="view" id="faq">
+  <p class="eb">SUPPORT / FREQUENTLY ASKED QUESTIONS</p>
+  <h1>Good questions. Clear answers.</h1>
+  <p class="lead">Everything you need to know about sourcing, samples, QC, payment, and shipping.</p>
+  <div id="faqList"></div>
+  <p class="note">General guidance only. Final terms are confirmed on the proforma invoice.</p>
+  <a class="lnk" href="#about">Still need a hand? Talk to our team →</a>
+</section>
+
+</main>
+
+<footer><span>© 2026 SLABMATCH · Find materials for your space.</span><div><a href="#samples">Samples</a><a href="#production">Production</a><a href="#faq">FAQ</a><a href="https://instagram.com" target="_blank" rel="noopener">Instagram</a></div></footer>
+<div class="toast" id="toast"></div>
+<script src="app.js"></script>
+</body>
+</html>
