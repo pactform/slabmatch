@@ -10,25 +10,25 @@ const src=[['Calacatta White','white','Italy','3000 × 1800','180'],['Carrara Wh
 const tops=[['Calacatta White','white','Rectangle','1400 × 800','260'],['Carrara White','carr','Rectangle','1200 × 600','150'],['Calacatta Gold','cal','Round','Ø900','320'],['Nero Marquina','nero','Rectangle','1600 × 900','180'],['Travertine','trav','Square','1200 × 1200','140']];
 const bases=[['Black Double Pedestal','Powder-coated steel · Up to 1600 × 900 mm','140','b1'],['Black X-Frame','Powder-coated steel · Up to 1800 × 950 mm','160','b2'],['Brass Twin Pedestal','Brushed brass steel · Rectangle or Ø900 tops','220','b3'],['Oak Trestle','Solid oak, matte finish · Up to 1600 × 900 mm','190','b4']];
 const faq=[
-['How do you source and match slabs?','We source across China’s stone quarries and markets. Send a name or photo; our team inspects candidates and can source other suppliers or quarries if needed. The range covers both Chinese and imported marble.'],
-['Is matching done automatically by AI?','Matching is visual and preliminary. Our team reviews every shortlist and confirms each slab in person.'],
-['What are the payment terms?','Procurement is paid in full; fabrication is paid in full before shipping. Final terms are confirmed on the proforma invoice.'],
-['Can I get samples before ordering?','Yes. Samples are free for genuine buyers; courier shipping is paid by you.'],
+['How do you source and match slabs?','We source across China’s quarries and markets. Send a name or photo; we inspect candidates and source alternatives if needed.'],
+['Is matching done automatically by AI?','Matching is visual and preliminary. Our team reviews every shortlist.'],
+['What are the payment terms?','Paid in full before shipping. Terms are on the proforma invoice.'],
+['Can I get samples before ordering?','Yes. Free for genuine buyers; you pay courier.'],
 ['What QC do you do before shipment?','Digital and physical dry-lay, with video before packing.'],
 ['Can I visit the factory?','Yes. Factory visits are welcome.'],
 ['Do you offer standalone QC for China sourcing?','Yes. Standalone QC is available for China sourcing.'],
 ['Do you handle export and shipping?','Yes. Production, inspection, packing, documents, and shipping.'],
 ['Can I order one slab or a small quantity?','Yes. Tell us your quantity in the inquiry form.'],
-['What shipping methods and lead times are available?','Confirmed per project. Plan lead time for China production and shipping.'],
-['How is export packing handled?','Export packing and inspection are handled before shipping.'],
-['What export documents are provided?','Export documents are prepared with your shipment and listed on the proforma invoice.'],
-['How do I maintain the marble?','Use a pH-neutral cleaner and a soft cloth. Avoid acidic liquids and abrasive products.']];
+['What shipping methods and lead times are available?','Confirmed per project.'],
+['How is export packing handled?','Packing and inspection are done before shipping.'],
+['What export documents are provided?','Prepared with your shipment and listed on the proforma invoice.'],
+['How do I maintain the marble?','pH-neutral cleaner, soft cloth. Avoid acid and abrasives.']];
 const S={cur:slabs[0],sel:[slabs[0]],photo:null,photoName:'kitchen-inspiration.jpg'};
 const store={get:()=>{try{return JSON.parse(localStorage.getItem('sm_inq')||'[]')}catch(e){return[]}},set:v=>{try{localStorage.setItem('sm_inq',JSON.stringify(v))}catch(e){}}};
 const toast=m=>{const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('on'),2200)};
 const go=v=>{location.hash=v};
 const area=(s,q)=>(s.w*s.h*q/1e4).toFixed(2);
-const desc=s=>s.k==='Travertine'?'Warm tones with natural layered patterns. A honed finish gives the stone its character.':`Natural veining with a refined look. A ${s.f.toLowerCase()} finish gives the stone its character.`;
+const desc=s=>s.k==='Travertine'?'Warm tones, layered pattern. Honed finish.':`Natural veining. ${s.f} finish.`;
 
 /* routing */
 function route(){
@@ -105,7 +105,7 @@ function renderInq(){
   $('#iThumb').className='thumb '+s.t;$('#iName').textContent=s.n+(S.sel.length>1&&S.sel.includes(s)?` +${S.sel.length-1} more`:'');
   $('#iSpec').innerHTML=`${s.c} · ${s.f}<br>${s.w} × ${s.h} cm · 20 mm`;
   $('#iQty').textContent=q+(q>1?' slabs':' slab');$('#iArea').textContent=area(s,q)+' m²';
-  if(!m.dataset.edit)m.value=`I’m interested in ${s.n} for a kitchen countertop. Please share pricing, finish options, and the delivery schedule.`;
+  if(!m.dataset.edit)m.value=`I’m interested in ${s.n} for a kitchen countertop. Please share pricing and delivery.`;
   m.oninput=()=>{m.dataset.edit=1};
 }
 $('#qty').onchange=renderInq;
@@ -161,3 +161,33 @@ $('#faqList').innerHTML=faq.map((f,i)=>`<div class="faq${i?'':' on'}"><button ar
 $('#faqList').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const d=b.parentNode,o=d.classList.toggle('on');b.setAttribute('aria-expanded',o)});
 
 renderTops();route();
+
+/* ===== scroll reveal (added) =====
+   Elemen muncul saat masuk layar, dan menghilang lagi saat keluar:
+   scroll ke bawah -> yang di bawah muncul; scroll ke atas -> yang di atas muncul,
+   yang keluar layar disembunyikan lagi sehingga animasi selalu berulang. */
+(()=>{
+  if(!('IntersectionObserver' in window))return;
+  const SEL='.view > *:not(.g2):not(.g3):not(.g4):not(.split):not(.hero):not(#faqList),.view > :is(.g2,.g3,.g4,.split,.hero,#faqList) > *';
+  let routeAt=performance.now();
+  addEventListener('hashchange',()=>{routeAt=performance.now()});
+  const io=new IntersectionObserver(es=>es.forEach(({target:el,isIntersecting,boundingClientRect:r})=>{
+    if(isIntersecting)el.classList.add('in');
+    else{el.style.setProperty('--ty',r.top>0?'32px':'-32px');el.classList.remove('in')}
+  }),{rootMargin:'-56px 0px -6% 0px'});
+  function scan(){
+    $$(SEL).filter(el=>!el._rv).forEach(el=>{
+      el._rv=1;
+      const p=el.parentNode;
+      const i=p.classList.contains('view')?0:[...p.children].filter(c=>c.matches(SEL)).indexOf(el);
+      el.style.setProperty('--d',Math.min(i,6)*70+'ms');
+      const r=el.getBoundingClientRect();
+      el.classList.add('rv');
+      /* re-render di halaman yang sama (mis. klik ♡) tidak perlu animasi ulang */
+      if(r.height>0&&r.top<innerHeight&&r.bottom>0&&performance.now()-routeAt>600)el.classList.add('in');
+      io.observe(el);
+    });
+  }
+  new MutationObserver(scan).observe($('main'),{childList:true,subtree:true});
+  scan();
+})();

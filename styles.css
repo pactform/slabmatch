@@ -142,3 +142,8 @@ footer div{display:flex;gap:18px}
 }
 @media(max-width:400px){.hr .btn{padding:8px 9px;font-size:11px}.logo{font-size:15px}.hr{gap:6px}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+
+/* ===== scroll reveal (added) ===== */
+.rv{opacity:0;transform:translate3d(0,var(--ty,32px),0);transition:opacity .7s cubic-bezier(.22,.8,.3,1),transform .7s cubic-bezier(.22,.8,.3,1)}
+.rv.in{opacity:1;transform:none;transition-delay:var(--d,0ms)}
+@media(prefers-reduced-motion:reduce){.rv{opacity:1;transform:none}}
