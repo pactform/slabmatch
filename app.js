@@ -168,12 +168,12 @@ renderTops();route();
    yang keluar layar disembunyikan lagi sehingga animasi selalu berulang. */
 (()=>{
   if(!('IntersectionObserver' in window))return;
-  const SEL='.view > *:not(.g2):not(.g3):not(.g4):not(.split):not(.hero):not(#faqList),.view > :is(.g2,.g3,.g4,.split,.hero,#faqList) > *';
+  const SEL='.view > *:not(.g2):not(.g3):not(.g4):not(.split):not(.hero):not(#faqList),.view > .g2 > *,.view > .g3 > *,.view > .g4 > *,.view > .split > *,.view > .hero > *,.view > #faqList > *';
   let routeAt=performance.now();
   addEventListener('hashchange',()=>{routeAt=performance.now()});
   const io=new IntersectionObserver(es=>es.forEach(({target:el,isIntersecting,boundingClientRect:r})=>{
     if(isIntersecting)el.classList.add('in');
-    else{el.style.setProperty('--ty',r.top>0?'32px':'-32px');el.classList.remove('in')}
+    else{el.style.setProperty('--ty',r.top>0?'32px':'-32px');el.classList.remove('in','now')}
   }),{rootMargin:'-56px 0px -6% 0px'});
   function scan(){
     $$(SEL).filter(el=>!el._rv).forEach(el=>{
@@ -184,10 +184,29 @@ renderTops();route();
       const r=el.getBoundingClientRect();
       el.classList.add('rv');
       /* re-render di halaman yang sama (mis. klik ♡) tidak perlu animasi ulang */
-      if(r.height>0&&r.top<innerHeight&&r.bottom>0&&performance.now()-routeAt>600)el.classList.add('in');
+      if(r.height>0&&r.top<innerHeight&&r.bottom>0&&performance.now()-routeAt>600)el.classList.add('in','now');
       io.observe(el);
     });
   }
   new MutationObserver(scan).observe($('main'),{childList:true,subtree:true});
   scan();
+})();
+
+/* ===== infographics: count-up angka (added) ===== */
+(()=>{
+  if(!('IntersectionObserver' in window))return;
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const run=el=>{
+    const to=+el.dataset.to,s=el.querySelector('span');if(!s)return;
+    cancelAnimationFrame(el._raf);
+    if(reduce){s.textContent=to;return}
+    const t0=performance.now(),d=1100;
+    const f=t=>{const p=Math.min((t-t0)/d,1),e=1-Math.pow(1-p,3);s.textContent=Math.round(to*e);if(p<1)el._raf=requestAnimationFrame(f)};
+    el._raf=requestAnimationFrame(f);
+  };
+  const io=new IntersectionObserver(es=>es.forEach(({target:el,isIntersecting})=>{
+    if(isIntersecting)run(el);
+    else{cancelAnimationFrame(el._raf);const s=el.querySelector('span');if(s)s.textContent=0}
+  }),{rootMargin:'-56px 0px -6% 0px'});
+  $$('.ig-num[data-to]').forEach(el=>io.observe(el));
 })();
